@@ -446,119 +446,119 @@ All statements above will return false if used with `===`
 
 <p align="right"><a href="#table-of-contents">⬆ Return to top</a></p>
 
-# `4. Testing And Overall Quality Practices`
+# `4. Pengujian Dan Praktik Kualitas Secara Keseluruhan`
 
-## ![✔] 4.1 At the very least, write API (component) testing
+## ![✔] 4.1 Setidaknya, tulis pengujian (komponen) API 
 
-**TL;DR:** Most projects just don't have any automated testing due to short timetables or often the 'testing project' ran out of control and was abandoned. For that reason, prioritize and start with API testing which is the easiest way to write and provides more coverage than unit testing (you may even craft API tests without code using tools like [Postman](https://www.getpostman.com/). Afterward, should you have more resources and time, continue with advanced test types like unit testing, DB testing, performance testing, etc
+**TL;DR:** Sebagian besar proyek tidak memiliki pengujian otomatis karena jadwal yang singkat atau sering 'proyek pengujian' tidak terkendali dan ditinggalkan. Oleh karena itu, prioritaskan dan mulailah dengan pengujian API yang merupakan cara termudah untuk menulis dan memberikan cakupan lebih dari pengujian unit (Anda bahkan dapat membuat pengujian API tanpa kode menggunakan alat seperti [Postman](https://www.getpostman.com/). Setelah itu, jika Anda memiliki lebih banyak sumber daya dan waktu, lanjutkan dengan jenis pengujian lanjutan seperti pengujian unit, pengujian DB, pengujian kinerja, dll
 
-**Otherwise:** You may spend long days on writing unit tests to find out that you got only 20% system coverage
-
-<br/><br/>
-
-## ![✔] 4.2 Include 3 parts in each test name
-
-**TL;DR:** Make the test speak at the requirements level so it's self-explanatory also to QA engineers and developers who are not familiar with the code internals. State in the test name what is being tested (unit under test), under what circumstances, and what is the expected result
-
-**Otherwise:** A deployment just failed, a test named “Add product” failed. Does this tell you what exactly is malfunctioning?
-
-🔗 [**Read More: Include 3 parts in each test name**](/sections/testingandquality/3-parts-in-name.md)
+**Jika tidak:** Anda mungkin menghabiskan waktu berhari-hari untuk menulis pengujian unit untuk mengetahui bahwa Anda hanya mendapat cakupan sistem 20%
 
 <br/><br/>
 
-## ![✔] 4.3 Structure tests by the AAA pattern
+## ![✔] 4.2 Sertakan 3 bagian di setiap nama tes
 
-**TL;DR:** Structure your tests with 3 well-separated sections: Arrange, Act & Assert (AAA). The first part includes the test setup, then the execution of the unit under test, and finally the assertion phase. Following this structure guarantees that the reader spends no brain CPU on understanding the test plan
+**TL;DR:** Buat tes berbicara pada tingkat persyaratan sehingga cukup jelas juga untuk insinyur QA dan pengembang yang tidak terbiasa dengan kode internal. Sebutkan dalam nama pengujian apa yang sedang diuji (unit dalam pengujian), dalam keadaan apa, dan apa hasil yang diharapkan
 
-**Otherwise:** Not only you spend long daily hours on understanding the main code, but now also what should have been the simple part of the day (testing) stretches your brain
+**Jika tidak:** Penerapan baru saja gagal, pengujian bernama "Tambahkan produk" gagal. Apakah ini memberi tahu Anda apa yang sebenarnya tidak berfungsi?
 
-🔗 [**Read More: Structure tests by the AAA pattern**](/sections/testingandquality/aaa.md)
-
-<br/><br/>
-
-## ![✔] 4.4 Detect code issues with a linter
-
-**TL;DR:** Use a code linter to check the basic quality and detect anti-patterns early. Run it before any test and add it as a pre-commit git-hook to minimize the time needed to review and correct any issue. Also check [Section 3](#3-code-style-practices) on Code Style Practices
-
-**Otherwise:** You may let pass some anti-pattern and possible vulnerable code to your production environment.
+🔗 [**Baca Selengkapnya: Sertakan 3 bagian di setiap nama tes**](/sections/testingandquality/3-parts-in-name.md)
 
 <br/><br/>
 
-## ![✔] 4.5 Avoid global test fixtures and seeds, add data per-test
+## ![✔] 4.3 Tes struktur dengan pola AAA
 
-**TL;DR:** To prevent test coupling and easily reason about the test flow, each test should add and act on its own set of DB rows. Whenever a test needs to pull or assume the existence of some DB data - it must explicitly add that data and avoid mutating any other records
+**TL;DR:** Susun pengujian Anda dengan 3 bagian yang terpisah dengan baik: Atur, Bertindak & Tegaskan (AAA). Bagian pertama mencakup penyiapan pengujian, lalu eksekusi unit yang diuji, dan terakhir fase pernyataan. Mengikuti struktur ini menjamin bahwa pembaca tidak menghabiskan CPU otak untuk memahami rencana pengujian
 
-**Otherwise:** Consider a scenario where deployment is aborted due to failing tests, team is now going to spend precious investigation time that ends in a sad conclusion: the system works well, the tests however interfere with each other and break the build
+**Jika tidak:** Tidak hanya Anda menghabiskan waktu berjam-jam setiap hari untuk memahami kode utama, tetapi sekarang juga apa yang seharusnya menjadi bagian sederhana dari hari itu (pengujian) meregangkan otak Anda
 
-🔗 [**Read More: Avoid global test fixtures**](/sections/testingandquality/avoid-global-test-fixture.md)
-
-<br/><br/>
-
-## ![✔] 4.6 Constantly inspect for vulnerable dependencies
-
-**TL;DR:** Even the most reputable dependencies such as Express have known vulnerabilities. This can get easily tamed using community and commercial tools such as 🔗 [npm audit](https://docs.npmjs.com/cli/audit) and 🔗 [snyk.io](https://snyk.io) that can be invoked from your CI on every build
-
-**Otherwise:** Keeping your code clean from vulnerabilities without dedicated tools will require to constantly follow online publications about new threats. Quite tedious
+🔗 [**Baca Selengkapnya: Tes struktur dengan pola AAA**](/sections/testingandquality/aaa.md)
 
 <br/><br/>
 
-## ![✔] 4.7 Tag your tests
+## ![✔] 4.4 Deteksi masalah kode dengan linter
 
-**TL;DR:** Different tests must run on different scenarios: quick smoke, IO-less, tests should run when a developer saves or commits a file, full end-to-end tests usually run when a new pull request is submitted, etc. This can be achieved by tagging tests with keywords like #cold #api #sanity so you can grep with your testing harness and invoke the desired subset. For example, this is how you would invoke only the sanity test group with [Mocha](https://mochajs.org/): mocha --grep 'sanity'
+**TL;DR:** Gunakan linter kode untuk memeriksa kualitas dasar dan mendeteksi anti-pola sejak dini. Jalankan sebelum pengujian apa pun dan tambahkan sebagai pra-commit git-hook untuk meminimalkan waktu yang diperlukan untuk meninjau dan memperbaiki masalah apa pun. Periksa juga [Section 3](#3-code-style-practices) tentang Praktik Gaya Kode
 
-**Otherwise:** Running all the tests, including tests that perform dozens of DB queries, any time a developer makes a small change can be extremely slow and keeps developers away from running tests
-
-<br/><br/>
-
-## ![✔] 4.8 Check your test coverage, it helps to identify wrong test patterns
-
-**TL;DR:** Code coverage tools like [Istanbul](https://github.com/istanbuljs/istanbuljs)/[NYC](https://github.com/istanbuljs/nyc) are great for 3 reasons: it comes for free (no effort is required to benefit this reports), it helps to identify a decrease in testing coverage, and last but not least it highlights testing mismatches: by looking at colored code coverage reports you may notice, for example, code areas that are never tested like catch clauses (meaning that tests only invoke the happy paths and not how the app behaves on errors). Set it to fail builds if the coverage falls under a certain threshold
-
-**Otherwise:** There won't be any automated metric telling you when a large portion of your code is not covered by testing
+**Jika tidak:** Anda boleh membiarkan beberapa anti-pola dan kemungkinan kode rentan ke lingkungan produksi Anda.
 
 <br/><br/>
 
-## ![✔] 4.9 Inspect for outdated packages
+## ![✔] 4.5 Hindari perlengkapan dan benih uji global, tambahkan data per uji
 
-**TL;DR:** Use your preferred tool (e.g. 'npm outdated' or [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) to detect installed outdated packages, inject this check into your CI pipeline and even make a build fail in a severe scenario. For example, a severe scenario might be when an installed package is 5 patch commits behind (e.g. local version is 1.3.1 and repository version is 1.3.8) or it is tagged as deprecated by its author - kill the build and prevent deploying this version
+**TL;DR:** Untuk mencegah penggandengan uji dan memudahkan alasan tentang aliran uji, setiap pengujian harus menambah dan bertindak pada kumpulan baris DB-nya sendiri. Setiap kali pengujian perlu menarik atau mengasumsikan keberadaan beberapa data DB - pengujian harus secara eksplisit menambahkan data tersebut dan menghindari mutasi record lainnya.
 
-**Otherwise:** Your production will run packages that have been explicitly tagged by their author as risky
+**Jika tidak:** Pertimbangkan skenario di mana penerapan dibatalkan karena pengujian yang gagal, tim sekarang akan menghabiskan waktu penyelidikan yang berharga yang berakhir dengan kesimpulan yang menyedihkan: sistem berfungsi dengan baik, namun pengujian saling mengganggu dan merusak build
 
-<br/><br/>
-
-## ![✔] 4.10 Use production-like environment for e2e testing
-
-**TL;DR:** End to end (e2e) testing which includes live data used to be the weakest link of the CI process as it depends on multiple heavy services like DB. Use an environment which is as close to your real production environment as possible like a-continue (Missed -continue here, needs content. Judging by the **Otherwise** clause, this should mention docker-compose)
-
-**Otherwise:** Without docker-compose, teams must maintain a testing DB for each testing environment including developers' machines, keep all those DBs in sync so test results won't vary across environments
+🔗 [**Baca Selengkapnya: Hindari perlengkapan uji global**](/sections/testingandquality/avoid-global-test-fixture.md)
 
 <br/><br/>
 
-## ![✔] 4.11 Refactor regularly using static analysis tools
+## ![✔] 4.6 Periksa terus menerus untuk dependensi yang rentan
 
-**TL;DR:** Using static analysis tools helps by giving objective ways to improve code quality and keeps your code maintainable. You can add static analysis tools to your CI build to fail when it finds code smells. Its main selling points over plain linting are the ability to inspect quality in the context of multiple files (e.g. detect duplications), perform advanced analysis (e.g. code complexity), and follow the history and progress of code issues. Two examples of tools you can use are [Sonarqube](https://www.sonarqube.org/) (2,600+ [stars](https://github.com/SonarSource/sonarqube)) and [Code Climate](https://codeclimate.com/) (1,500+ [stars](https://github.com/codeclimate/codeclimate)).
+**TL;DR:** Bahkan dependensi paling terkemuka seperti Express memiliki kerentanan yang diketahui. Ini dapat dengan mudah dijinakkan menggunakan alat komunitas dan komersial seperti 🔗 [npm audit](https://docs.npmjs.com/cli/audit) dan 🔗 [snyk.io](https://snyk.io) yang dapat dipanggil dari CI Anda di setiap build
 
-**Otherwise:** With poor code quality, bugs and performance will always be an issue that no shiny new library or state of the art features can fix
-
-🔗 [**Read More: Refactoring!**](/sections/testingandquality/refactoring.md)
+**Jika tidak:** Menjaga kode Anda bersih dari kerentanan tanpa alat khusus harus terus mengikuti publikasi online tentang ancaman baru. Cukup membosankan
 
 <br/><br/>
 
-## ![✔] 4.12 Carefully choose your CI platform (Jenkins vs CircleCI vs Travis vs Rest of the world)
+## ![✔] 4.7 Tandai tes Anda
 
-**TL;DR:** Your continuous integration platform (CICD) will host all the quality tools (e.g test, lint) so it should come with a vibrant ecosystem of plugins. [Jenkins](https://jenkins.io/) used to be the default for many projects as it has the biggest community along with a very powerful platform at the price of a complex setup that demands a steep learning curve. Nowadays, it has become much easier to set up a CI solution using SaaS tools like [CircleCI](https://circleci.com) and others. These tools allow crafting a flexible CI pipeline without the burden of managing the whole infrastructure. Eventually, it's a trade-off between robustness and speed - choose your side carefully
+**TL;DR:** Pengujian yang berbeda harus dijalankan pada skenario yang berbeda: quick smoke, IO-less, pengujian harus dijalankan saat pengembang menyimpan atau melakukan file, pengujian ujung-ke-ujung penuh biasanya dijalankan saat permintaan tarik baru dikirimkan, dll. Hal ini dapat dicapai dengan menandai pengujian dengan kata kunci seperti #cold #api #sanity sehingga Anda dapat memanfaatkan harness pengujian Anda dan menjalankan subset yang diinginkan. Misalnya, ini adalah cara Anda memanggil hanya grup uji kewarasan dengan [Mocha](https://mochajs.org/): mocha --grep 'sanity'
 
-**Otherwise:** Choosing some niche vendor might get you blocked once you need some advanced customization. On the other hand, going with Jenkins might burn precious time on infrastructure setup
+**Jika tidak:** Menjalankan semua pengujian, termasuk pengujian yang menjalankan lusinan kueri DB, setiap kali pengembang membuat perubahan kecil bisa sangat lambat dan menjauhkan pengembang dari menjalankan pengujian.
 
-🔗 [**Read More: Choosing CI platform**](/sections/testingandquality/citools.md)
+<br/><br/>
 
-## ![✔] 4.13 Test your middlewares in isolation
+## ![✔] 4.8 Periksa cakupan tes Anda, ini membantu untuk mengidentifikasi pola tes yang salah
 
-**TL;DR:** When a middleware holds some immense logic that spans many requests, it is worth testing it in isolation without waking up the entire web framework. This can be easily achieved by stubbing and spying on the {req, res, next} objects
+**TL;DR:** Alat cakupan kode seperti [Istanbul](https://github.com/istanbuljs/istanbuljs)/[NYC](https://github.com/istanbuljs/nyc) sangat bagus karena 3 alasan: ini gratis (tidak ada upaya yang diperlukan untuk memanfaatkan laporan ini), membantu mengidentifikasi penurunan cakupan pengujian, dan yang terakhir menyoroti ketidakcocokan pengujian: dengan melihat laporan cakupan kode berwarna, Anda dapat perhatikan, misalnya, area kode yang tidak pernah diuji seperti klausa tangkapan (artinya, pengujian hanya memanggil jalur bahagia dan bukan bagaimana aplikasi berperilaku pada kesalahan). Setel agar gagal dibangun jika cakupannya berada di bawah ambang tertentu
 
-**Otherwise:** A bug in Express middleware === a bug in all or most requests
+**Jika tidak:**  Tidak akan ada metrik otomatis yang memberi tahu Anda saat sebagian besar kode Anda tidak tercakup dalam pengujian
 
-🔗 [**Read More: Test middlewares in isolation**](/sections/testingandquality/test-middlewares.md)
+<br/><br/>
+
+## ![✔] 4.9 Periksa paket yang kedaluwarsa
+
+**TL;DR:** Gunakan alat pilihan Anda (mis. 'Npm outdated' atau [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) to mendeteksi paket usang yang terinstal, memasukkan pemeriksaan ini ke pipeline CI Anda dan bahkan membuat build gagal dalam skenario yang parah. Misalnya, skenario yang parah mungkin terjadi ketika paket yang diinstal 5 patch tertinggal (misalnya versi lokal 1.3.1 dan versi repositori adalah 1.3.8) atau ditandai sebagai tidak digunakan lagi oleh pembuatnya - matikan build dan cegah penerapan ini Versi: kapan
+
+**Jika tidak:**  Produksi Anda akan menjalankan paket yang secara eksplisit diberi tag oleh pembuatnya sebagai berisiko
+
+<br/><br/>
+
+## ![✔] 4.10 Gunakan lingkungan seperti produksi untuk pengujian e2e
+
+**TL;DR:** Pengujian ujung ke ujung (e2e) yang mencakup data langsung yang dulunya merupakan tautan terlemah dari proses CI karena bergantung pada beberapa layanan berat seperti DB. Gunakan lingkungan yang sedekat mungkin dengan lingkungan produksi nyata Anda seperti a-continue (Tidak terjawab -lanjutkan di sini, membutuhkan konten. Dilihat oleh **Jika tidak:** klausul, ini harus menyebutkan docker-compose)
+
+**Jika tidak:** Tanpa docker-compose, tim harus mempertahankan DB pengujian untuk setiap lingkungan pengujian termasuk mesin developer, menjaga semua DB tersebut tetap sinkron sehingga hasil pengujian tidak akan berbeda di seluruh lingkungan.
+
+<br/><br/>
+
+## ![✔] 4.11 Refactor secara teratur menggunakan alat analisis statis
+
+**TL;DR:** Menggunakan alat analisis statis membantu dengan memberikan cara yang obyektif untuk meningkatkan kualitas kode dan menjaga kode Anda tetap dapat dipertahankan. Anda dapat menambahkan alat analisis statis ke build CI Anda agar gagal saat menemukan code bau. Nilai jual utamanya atas linting biasa adalah kemampuan untuk memeriksa kualitas dalam konteks beberapa file (misalnya, mendeteksi duplikasi), melakukan analisis lanjutan (misalnya kompleksitas kode), dan mengikuti riwayat dan kemajuan masalah kode. Dua contoh alat yang dapat Anda gunakan adalah [Sonarqube](https://www.sonarqube.org/) (2,600+ [stars](https://github.com/SonarSource/sonarqube)) dan [Code Climate](https://codeclimate.com/) (1,500+ [stars](https://github.com/codeclimate/codeclimate)).
+
+**Jika tidak:** Dengan kualitas kode yang buruk, bug dan kinerja akan selalu menjadi masalah yang tidak dapat diperbaiki oleh perpustakaan baru atau fitur-fitur canggih
+
+🔗 [**Baca Selengkapnya: Refactoring!**](/sections/testingandquality/refactoring.md)
+
+<br/><br/>
+
+## ![✔] 4.12 Pilih dengan hati-hati platform CI Anda (Jenkins vs CircleCI vs Travis vs Seluruh dunia)
+
+**TL;DR:** Platform integrasi berkelanjutan (CICD) Anda akan menghosting semua alat kualitas (mis. Pengujian, lint) sehingga harus dilengkapi dengan ekosistem plugin yang dinamis. [Jenkins](https://jenkins.io/) dulunya adalah default untuk banyak proyek karena memiliki komunitas terbesar bersama dengan platform yang sangat kuat dengan harga pengaturan kompleks yang menuntut kurva pembelajaran yang curam. Saat ini, jauh lebih mudah untuk menyiapkan solusi CI menggunakan alat SaaS seperti [CircleCI](https://circleci.com) dan lain-lain. Alat ini memungkinkan pembuatan pipeline CI yang fleksibel tanpa beban mengelola seluruh infrastruktur. Akhirnya, ini adalah trade-off antara kekuatan dan kecepatan - pilih sisi Anda dengan hati-hati.
+
+**Jika tidak:** Memilih beberapa vendor khusus mungkin membuat Anda diblokir begitu Anda membutuhkan penyesuaian tingkat lanjut. Di sisi lain, menggunakan Jenkins dapat menghabiskan waktu berharga dalam penyiapan infrastruktur
+
+🔗 [**Baca Selengkapnya: Memilih platform CI**](/sections/testingandquality/citools.md)
+
+## ![✔] 4.13 Uji middlewares Anda secara terpisah
+
+**TL;DR:** Ketika middleware menyimpan beberapa logika besar yang mencakup banyak permintaan, ada baiknya mengujinya secara terpisah tanpa membangunkan seluruh kerangka web. Ini bisa dengan mudah dicapai dengan menghentikan dan memata-matai objek {req, res, next}
+
+**Jika tidak:** Bug di middleware Express === bug di semua atau sebagian besar permintaan
+
+🔗 [**Baca Selengkapnya: Uji middlewares secara terpisah**](/sections/testingandquality/test-middlewares.md)
 
 <br/><br/><br/>
 
